@@ -1,0 +1,30 @@
+10 N 0.25 m/s RPM 2500 50% overlap
+25 N 0.5 m/s RPM 2500 50% overlap
+5 N 0.25 m/s RPM 3000 50% overlap (Moved object little along x axis)
+25 N 0.25 m/s RPM 3000 50% overlap
+10 N 0.75 m/s RPM 2500 50% overlap
+25 N 0.25 m/s RPM 3000 50% overlap
+5 N 1 m/s RPM 2500 50% overlap (Slightly shifted the way object was angled)
+
+10 N 0.25 m/s RPM 2500 50% overlap Vertical lines
+25 N 0.25 m/s RPM 2500 50% overlap Vertical lines
+25 N 0.25 m/s RPM 2500 25% overlap Vertical lines
+10 N 0.5 m/s RPM 2500 50% overlap Vertical lines
+10 N 0.5 m/s RPM 3000 50% overlap Vertical lines
+
+10 N 0.5 m/s RPM 2500 50% overlap Diagonal lines
+10 N 0.5 m/s RPM 2500 50% overlap Horizontal Lines
+10 N 0.25 m/s RPM 3000 50% overlap Diagonal Lines
+10 N 0.25 m/s RPM 3000 50% overlap Vertical Lines
+10 N 0.25 m/s RPM 3000 50% overlap Horizontal Lines
+10 N 0.25 m/s RPM 2000 50% overlap Horizontal Lines
+
+
+
+10 N 0.25 m/s RPM 2500 50% overlap Horizontal Lines
+20 N 0.25 m/s RPM 2600 50% overlap Horizontal Lines
+5 N 0.5 m/s RPM 2600 50% overlap Horizontal Lines
+5 N 0.5 m/s RPM 3000 50% overlap Horizontal Lines
+
+10 N 0.5 m/s RPM 2500 50% overlap Vertical Lines
+25 N 0.5 m/s RPM 2500 50% overlap Vertical Lines
