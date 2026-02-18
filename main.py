@@ -1,13 +1,15 @@
-from datetime import datetime
+import os
+import re
 import time
 import socket
 import matplotlib.pyplot as plt
+from datetime import datetime
 from collections import deque
-from functions import SandingTracker, telnet_connect, check_force_error, poll_command
+from functions import SandingTracker, telnet_connect, check_force_error, poll_command, file_number
 
+
+POSITION_LOG = file_number()
 HOST = "192.168.11.228"
-POSITION_LOG = f"position_log_{time.time()}.txt"
-# POSITION_LOG = "position_log.txt"
 ERROR_LOG = "error_log.txt"
 PORT = 23
 WINDOW = 10.0
@@ -41,19 +43,19 @@ def main():
             force = poll_command(tn, "actualForce")                    # Read Force
             pos = poll_command(tn, "actualPosition")                   # Read Position
             dial_pos = round(pos - 10, 4) 
-
+            cmd_position = poll_command(tn, "commandedPosition")         # Read Commanded Position
             cmd_force = poll_command(tn, "commandForce")               # Read Command Force
             pro_error = poll_command(tn, "proportionalError")          # Read Proportional Error
-            tool_status = poll_command(tn, "softTouchEnabled")         # Read Tool Status
+
 
             # check_force_error(ts, force, cmd_force, pro_error)         # Flag Potential Errors
 
             with open(POSITION_LOG, "a") as f:
-                f.write(f"{ts}, {dial_pos}, {force},{pro_error}, {cmd_force} {tool_status}\n")
+                f.write(f"{ts}, {dial_pos}, {cmd_position}, {force}, {cmd_force}, {pro_error}\n")
 
             tracker.process_new_entry(ts, cmd_force)
 
-            print(f"Position: {dial_pos}, Force: {force},  Command Force: {cmd_force}, Proportional Error: {pro_error}, Tool Status: {tool_status}")
+            print(f"Position: {dial_pos}, Commanded Position: {cmd_position}, Force: {force},  Command Force: {cmd_force}, Proportional Error: {pro_error}, ")
 
             times.append(t)
             positions.append(pos)
