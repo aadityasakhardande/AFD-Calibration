@@ -5,16 +5,17 @@ import socket
 import matplotlib.pyplot as plt
 from datetime import datetime
 from collections import deque
-from functions import SandingTracker, telnet_connect, check_force_error, poll_command, file_number
+from functions import SandingTracker, pct_force, rest_force, telnet_connect, check_force_error, poll_command
 
+tracker = SandingTracker()
 
-POSITION_LOG = file_number()
+POSITION_LOG = tracker.position_log()
+PCT_LOG = tracker.pct_log()
 HOST = "192.168.11.228"
 ERROR_LOG = "error_log.txt"
 PORT = 23
 WINDOW = 10.0
 MAX_POINTS = 500
-tracker = SandingTracker()
 
 def main():
 
@@ -53,7 +54,26 @@ def main():
             with open(POSITION_LOG, "a") as f:
                 f.write(f"{ts}, {dial_pos}, {cmd_position}, {force}, {cmd_force}, {pro_error}\n")
 
+            ################################################## Tracking Motion only when PCT starts ##################################################
+            if not pct_logging_started and pct_force == cmd_force:
+                pct_logging_started = True
+                pct_logging_stop_time = None
+
+            if pct_logging_started:
+                if pct_force == rest_force and pct_logging_stop_time is None:
+                    pct_logging_stop_time = time.time() + 5.0 
+
+            if pct_logging_started:
+                with open(PCT_LOG, "a") as f:
+                    f.write(f"{ts}, {dial_pos}, {cmd_position}, {force}, {cmd_force}, {pro_error}\n")
+
+            if pct_logging_stop_time is not None and time.time() >= pct_logging_stop_time:
+                pct_logging_started = False
+                pct_logging_stop_time = None
+
+            ########## ########## ########## ########## ########## ########## ########## ########## ########## ########## ########## ########## ##########
             tracker.process_new_entry(ts, cmd_force)
+
 
             print(f"Position: {dial_pos}, Commanded Position: {cmd_position}, Force: {force},  Command Force: {cmd_force}, Proportional Error: {pro_error}, ")
 
