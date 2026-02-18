@@ -11,7 +11,7 @@ WINDOW = 10.0
 HOST = "192.168.11.228"
 DATA_LOG_PATH = "BWP_Data"
 PCT_PATH = "BWP_Data/PCT"
-TIMELINE_FILE = f"BWP_SS/timeline{time.time()}.txt"
+TIMELINE_FILE = f"BWP_Data/Timelinestimeline{time.time()}.txt"
 ERROR_LOG = "error_log.txt"
 
 scan_force_file = "/home/gmr/dev-docker/ss/src/settings/launch/launch_arguments.yaml"               # To access Scan Force ("scan_force")
