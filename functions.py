@@ -60,23 +60,41 @@ class SandingTracker:
         self.output_file = output_file
         self.scanning_detected = False
 
-    def position_log(folder= DATA_LOG_PATH):
-        existing = [
-            int(m.group(1))
-            for f in os.listdir(folder)
-            if (m := re.match(r"position_log_(\d+)\.txt$", f))
-        ]
-        next_number = max(existing, default=0) + 1
-        return os.path.join(folder, f"position_log_{next_number}.txt")
+    # def position_log(folder= DATA_LOG_PATH):
+    #     existing = [
+    #         int(m.group(1))
+    #         for f in os.listdir(folder)
+    #         if (m := re.match(r"position_log_(\d+)\.txt$", f))
+    #     ]
+    #     next_number = max(existing, default=0) + 1
+    #     return os.path.join(folder, f"position_log_{next_number}.txt")
 
-    def pct_log(folder= PCT_PATH):
+    # def pct_log(folder= PCT_PATH):
+    #     existing = [
+    #         int(m.group(1))
+    #         for f in os.listdir(folder)
+    #         if (m := re.match(r"position_log_(\d+)\.txt$", f))
+    #     ]
+    #     next_number = max(existing, default=0) + 1
+    #     return os.path.join(folder, f"pct_log_{next_number}.txt")
+
+    def position_log(folder=DATA_LOG_PATH):
         existing = [
             int(m.group(1))
             for f in os.listdir(folder)
-            if (m := re.match(r"position_log_(\d+)\.txt$", f))
+            if (m := re.match(r"position_log_(\d+)\.csv$", f)) 
         ]
         next_number = max(existing, default=0) + 1
-        return os.path.join(folder, f"pct_log_{next_number}.txt")
+        return os.path.join(folder, f"position_log_{next_number}.csv")
+
+    def pct_log(folder=PCT_PATH):
+        existing = [
+            int(m.group(1))
+            for f in os.listdir(folder)
+            if (m := re.match(r"pct_log_(\d+)\.csv$", f))  
+        ]
+        next_number = max(existing, default=0) + 1
+        return os.path.join(folder, f"pct_log_{next_number}.csv")
     
     def get_state(self, force):
         if force == scan_force:
@@ -104,7 +122,6 @@ class SandingTracker:
 
         # If force changed -> finalize old interval
         if cmd_force != self.current_force:
-
             self.intervals.append((
                 self.current_force,
                 self.start_time,
@@ -114,7 +131,6 @@ class SandingTracker:
 
             self.current_force = cmd_force
             self.start_time = timestamp
-
         # Always update outputs
         self.update_outputs(timestamp)
 
