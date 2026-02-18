@@ -1,0 +1,101 @@
+__version__:
+  serializer: 1
+  data: 25
+Settings:
+  Acquisitions:
+    - Acquisition:
+        Aperture: 1.83
+        Brightness: 1.8
+        ExposureTime: 100000
+        Gain: 1
+    - Acquisition:
+        Aperture: 4.49973261107227
+        Brightness: 1.77403307154257
+        ExposureTime: 8333
+        Gain: 1
+    - Acquisition:
+        Aperture: 12.4034734589208
+        Brightness: 1.12184626943569
+        ExposureTime: 8333
+        Gain: 1
+    - Acquisition:
+        Aperture: 2
+        Brightness: 1.8
+        ExposureTime: 8333
+        Gain: 1.70950437113517
+    - Acquisition:
+        Aperture: 3.22668078510682
+        Brightness: 1.8
+        ExposureTime: 1677
+        Gain: 1.01028793243891
+    - Acquisition:
+        Aperture: 11.1207571976946
+        Brightness: 1.78241009686061
+        ExposureTime: 1677
+        Gain: 1
+  Diagnostics:
+    Enabled: no
+  Engine: phase
+  Processing:
+    Color:
+      Balance:
+        Blue: 1
+        Green: 1
+        Red: 1
+      Experimental:
+        Mode: automatic
+      Gamma: 1
+    Filters:
+      Cluster:
+        Removal:
+          Enabled: yes
+          MaxNeighborDistance: 10
+          MinArea: 1500
+      Experimental:
+        ContrastDistortion:
+          Correction:
+            Enabled: yes
+            Strength: 0.3
+          Removal:
+            Enabled: no
+            Threshold: 0.2
+      Hole:
+        Repair:
+          Enabled: yes
+          HoleSize: 0.2
+          Strictness: 2
+      Noise:
+        Removal:
+          Enabled: no
+          Threshold: 10
+        Repair:
+          Enabled: no
+        Suppression:
+          Enabled: no
+      Outlier:
+        Removal:
+          Enabled: yes
+          Threshold: 10
+      Reflection:
+        Removal:
+          Enabled: yes
+          Mode: local
+      Smoothing:
+        Gaussian:
+          Enabled: yes
+          Sigma: 1
+    Resampling:
+      Mode: disabled
+  RegionOfInterest:
+    Box:
+      Enabled: no
+      Extents: [-10, 100]
+      PointA: [0, 0, 0]
+      PointB: [0, 0, 0]
+      PointO: [0, 0, 0]
+    Depth:
+      Enabled: yes
+      Range: [250, 700]
+  Sampling:
+    Color: disabled
+    Pixel: all
