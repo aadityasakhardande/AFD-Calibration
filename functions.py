@@ -1,16 +1,18 @@
 import os
+import re
 import telnetlib
 import time
 import yaml
 import json
 from pathlib import Path
 
-HOST = "192.168.11.228"
-LOG_FILE = "position_log.txt"
-TIMELINE_FILE = f"BWP_SS/timeline{time.time()}.txt"
-ERROR_LOG = "error_log.txt"
 PORT = 23
 WINDOW = 10.0
+HOST = "192.168.11.228"
+DATA_LOG_PATH = "BWP_Data"
+PCT_PATH = "BWP_Data/PCT"
+TIMELINE_FILE = f"BWP_SS/timeline{time.time()}.txt"
+ERROR_LOG = "error_log.txt"
 
 scan_force_file = "/home/gmr/dev-docker/ss/src/settings/launch/launch_arguments.yaml"               # To access Scan Force ("scan_force")
 with open(scan_force_file, "r") as file:
@@ -22,7 +24,7 @@ with open(rest_force_file, "r") as file:
     config = yaml.safe_load(file)
 rest_force = float(config["force"]["static_force"]) 
 
-noncontact_force_file = "/home/gmr/dev-docker/ss/src/settings/launch/launch_arguments.yaml"         # To access Non-Contact Force (P2P)
+noncontact_force_file = "/home/gmr/dev-docker/ss/src/settings/launch/launch_arguments.yaml"         # To access Non-Contact Force (P2P) ("noncontact_force")
 with open(noncontact_force_file, "r") as file:
     config = yaml.safe_load(file)
 noncontact_force = float(config["motion"]["noncontact_force"]) 
@@ -58,6 +60,24 @@ class SandingTracker:
         self.output_file = output_file
         self.scanning_detected = False
 
+    def position_log(folder= DATA_LOG_PATH):
+        existing = [
+            int(m.group(1))
+            for f in os.listdir(folder)
+            if (m := re.match(r"position_log_(\d+)\.txt$", f))
+        ]
+        next_number = max(existing, default=0) + 1
+        return os.path.join(folder, f"position_log_{next_number}.txt")
+
+    def pct_log(folder= PCT_PATH):
+        existing = [
+            int(m.group(1))
+            for f in os.listdir(folder)
+            if (m := re.match(r"position_log_(\d+)\.txt$", f))
+        ]
+        next_number = max(existing, default=0) + 1
+        return os.path.join(folder, f"pct_log_{next_number}.txt")
+    
     def get_state(self, force):
         if force == scan_force:
             return "Scanning"
@@ -132,7 +152,6 @@ class SandingTracker:
 
     def update_outputs(self, current_time):
         table = self.build_table_string(current_time)
-        # ---- WRITE TO FILE (LIVE UPDATE) ----
         with open(self.output_file, "w") as f:
             f.write(table)
             
@@ -155,9 +174,9 @@ def read_line(tn):
 def poll_command(tn, command):
 
     tn.write(command.encode("ascii") + b"\n")
-    _ = read_line(tn)        # echo
-    result = read_line(tn)   # data
-    tn.read_until(b">>")     # prompt
+    _ = read_line(tn)        
+    result = read_line(tn)   
+    tn.read_until(b">>")     
     return float(result)
 
 def check_force_error(timestamp, actualForce, commandForce, proportional_error):
