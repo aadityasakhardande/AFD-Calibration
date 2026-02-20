@@ -11,7 +11,6 @@ tracker = SandingTracker()
 
 POSITION_LOG = tracker.position_log()
 PCT_LOG = tracker.pct_log()
-HOST = "192.168.11.228"
 ERROR_LOG = "error_log.txt"
 PORT = 23
 WINDOW = 10.0
@@ -35,6 +34,9 @@ def main():
 
     start_time = time.time()
 
+    pct_logging_started = False
+    pct_logging_stop_time = None
+    
     while True:
 
         try:
@@ -44,7 +46,7 @@ def main():
             force = poll_command(tn, "actualForce")                    # Read Force
             pos = poll_command(tn, "actualPosition")                   # Read Position
             dial_pos = round(pos - 10, 4) 
-            cmd_position = poll_command(tn, "commandedPosition")         # Read Commanded Position
+            cmd_position = poll_command(tn, "commandPosition")         # Read Commanded Position
             cmd_force = poll_command(tn, "commandForce")               # Read Command Force
             pro_error = poll_command(tn, "proportionalError")          # Read Proportional Error
 
@@ -75,7 +77,7 @@ def main():
             tracker.process_new_entry(ts, cmd_force)
 
 
-            print(f"Position: {dial_pos}, Commanded Position: {cmd_position}, Force: {force},  Command Force: {cmd_force}, Proportional Error: {pro_error}, ")
+            print(f"Position: {dial_pos}, Force: {force},  Command Force: {cmd_force}, Proportional Error: {pro_error}, ")
 
             times.append(t)
             positions.append(pos)
