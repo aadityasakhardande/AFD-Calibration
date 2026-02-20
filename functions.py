@@ -9,27 +9,27 @@ from pathlib import Path
 PORT = 23
 WINDOW = 10.0
 HOST = "192.168.11.228"
-DATA_LOG_PATH = "BWP_Data"
-PCT_PATH = "BWP_Data/PCT"
-TIMELINE_FILE = f"BWP_Data/Timelinestimeline{time.time()}.txt"
+DATA_LOG_PATH = "Stoll_Data"
+PCT_PATH = "Stoll_Data/PCT"
+TIMELINE_FILE = f"Stoll_Data/timeline{time.time()}.txt"
 ERROR_LOG = "error_log.txt"
 
-scan_force_file = "/home/gmr/dev-docker/ss/src/settings/launch/launch_arguments.yaml"               # To access Scan Force ("scan_force")
+scan_force_file = "/home/gmr/dev-docker-AWR/dev-docker/ss/src/settings/launch/launch_arguments.yaml"               # To access Scan Force ("scan_force")
 with open(scan_force_file, "r") as file:
     config = yaml.safe_load(file)
 scan_force = float(config["scanning"]["scan_force"])
 
-rest_force_file = "/home/gmr/dev-docker/ss/src/settings/launch/launch_arguments.yaml"                 # To access Rest Force ("static_force")   
+rest_force_file = "/home/gmr/dev-docker-AWR/dev-docker/ss/src/settings/launch/launch_arguments.yaml"                 # To access Rest Force ("static_force")   
 with open(rest_force_file, "r") as file:
     config = yaml.safe_load(file)
 rest_force = float(config["force"]["static_force"]) 
 
-noncontact_force_file = "/home/gmr/dev-docker/ss/src/settings/launch/launch_arguments.yaml"         # To access Non-Contact Force (P2P) ("noncontact_force")
+noncontact_force_file = "/home/gmr/dev-docker-AWR/dev-docker/ss/src/settings/launch/launch_arguments.yaml"         # To access Non-Contact Force (P2P) ("noncontact_force")
 with open(noncontact_force_file, "r") as file:
     config = yaml.safe_load(file)
 noncontact_force = float(config["motion"]["noncontact_force"]) 
 
-pct_force_file = "/home/gmr/dev-docker/runtime_data/profile_handler/run"                            # To access PCT Force ("force")
+pct_force_file = "/home/gmr/dev-docker-AWR/dev-docker/runtime_data/profile_handler/run"                            # To access PCT Force ("force")
 folders = [f for f in Path(pct_force_file).iterdir() if f.is_dir()]
 latest_folder = max(folders, key=lambda f: f.stat().st_ctime)
 json_file = None
@@ -51,6 +51,7 @@ print("Rest Force:", rest_force, type(rest_force))
 print("Non-Contact Force:", noncontact_force, type(noncontact_force))
 print("PCT Force:", pct_force, type(pct_force))
 
+
 class SandingTracker:
 
     def __init__(self, output_file=TIMELINE_FILE):
@@ -60,25 +61,7 @@ class SandingTracker:
         self.output_file = output_file
         self.scanning_detected = False
 
-    # def position_log(folder= DATA_LOG_PATH):
-    #     existing = [
-    #         int(m.group(1))
-    #         for f in os.listdir(folder)
-    #         if (m := re.match(r"position_log_(\d+)\.txt$", f))
-    #     ]
-    #     next_number = max(existing, default=0) + 1
-    #     return os.path.join(folder, f"position_log_{next_number}.txt")
-
-    # def pct_log(folder= PCT_PATH):
-    #     existing = [
-    #         int(m.group(1))
-    #         for f in os.listdir(folder)
-    #         if (m := re.match(r"position_log_(\d+)\.txt$", f))
-    #     ]
-    #     next_number = max(existing, default=0) + 1
-    #     return os.path.join(folder, f"pct_log_{next_number}.txt")
-
-    def position_log(folder=DATA_LOG_PATH):
+    def position_log(self, folder=DATA_LOG_PATH):
         existing = [
             int(m.group(1))
             for f in os.listdir(folder)
@@ -87,7 +70,7 @@ class SandingTracker:
         next_number = max(existing, default=0) + 1
         return os.path.join(folder, f"position_log_{next_number}.csv")
 
-    def pct_log(folder=PCT_PATH):
+    def pct_log(SELF,folder=PCT_PATH):
         existing = [
             int(m.group(1))
             for f in os.listdir(folder)
@@ -95,7 +78,7 @@ class SandingTracker:
         ]
         next_number = max(existing, default=0) + 1
         return os.path.join(folder, f"pct_log_{next_number}.csv")
-    
+        
     def get_state(self, force):
         if force == scan_force:
             return "Scanning"
@@ -126,7 +109,7 @@ class SandingTracker:
                 self.current_force,
                 self.start_time,
                 timestamp,
-                # self.get_state(self.current_force)          # Add State
+                self.get_state(self.current_force)          # Add State
             ))
 
             self.current_force = cmd_force
