@@ -1,0 +1,6 @@
+
+TIMELINE
+
+Cmd Force   State          Start Time     End Time       Duration (s)   
+--------------------------------------------------------------------------------
+8.0         Rest        21:23:08            -                   3.0

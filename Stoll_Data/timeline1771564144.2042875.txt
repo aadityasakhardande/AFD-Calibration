@@ -1,0 +1,6 @@
+
+TIMELINE
+
+Cmd Force   State          Start Time     End Time       Duration (s)   
+--------------------------------------------------------------------------------
+0.0         Unknown     21:09:04            -                   1.0
